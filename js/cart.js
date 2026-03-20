@@ -105,16 +105,22 @@
             checkoutBtn.addEventListener('click', function () {
                 var result = Store.checkout();
 
-                // 儲存訊息到 sessionStorage，由首頁顯示
-                sessionStorage.setItem('ctf_message', result.message);
-                sessionStorage.setItem('ctf_message_type', result.messageType);
+                // 顯示結帳訊息
+                showMessage('messageArea', result.message, result.messageType || 'info');
 
                 if (result.showFlag) {
-                    sessionStorage.setItem('ctf_show_flag', result.flag);
+                    // 直接在本頁顯示 Flag 彈窗
+                    document.getElementById('flagValue').textContent = result.flag;
+                    new bootstrap.Modal(document.getElementById('flagModal')).show();
+                } else {
+                    // 無 Flag 時跳回首頁
+                    setTimeout(function () {
+                        window.location.href = 'index.html';
+                    }, 1200);
                 }
 
-                // 跳回首頁
-                window.location.href = 'index.html';
+                // 重新渲染購物車（已清空）
+                render();
             });
         }
     }

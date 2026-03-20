@@ -1,5 +1,5 @@
 /**
- * 首頁邏輯 — 商品列表、加入購物車、Flag 彈窗
+ * 首頁邏輯 — 商品列表、加入購物車
  */
 (function () {
     // 更新餘額顯示
@@ -86,32 +86,9 @@
             '<tbody>' + rows + '</tbody></table></div>';
     }
 
-    // 檢查是否有待顯示的 Flag（從 sessionStorage）
-    function checkPendingFlag() {
-        var flag = sessionStorage.getItem('ctf_show_flag');
-        if (flag) {
-            document.getElementById('flagValue').textContent = flag;
-            new bootstrap.Modal(document.getElementById('flagModal')).show();
-            sessionStorage.removeItem('ctf_show_flag');
-        }
-    }
-
-    // 檢查是否有待顯示的訊息
-    function checkPendingMessage() {
-        var msg = sessionStorage.getItem('ctf_message');
-        var type = sessionStorage.getItem('ctf_message_type');
-        if (msg) {
-            showMessage('messageArea', msg, type || 'info');
-            sessionStorage.removeItem('ctf_message');
-            sessionStorage.removeItem('ctf_message_type');
-        }
-    }
-
     // 初始化
     updateBalance();
     updateCartBadge();
     renderProducts();
     renderPurchases();
-    checkPendingMessage();
-    checkPendingFlag();
 })();
