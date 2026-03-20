@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗黑市場 // 地下商店</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span class="navbar-brand cursor-blink">暗黑市場</span>
+            <div class="d-flex gap-3">
+                <a href="submit_flag.html" class="nav-flag-btn">[ FLAG 提交 ]</a>
+                <a href="cart.html" class="nav-cart-btn">
+                    [ 購物車 ]
+                    <span class="badge cart-badge" id="cartBadge" style="display:none;"></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- 餘額卡片 -->
+        <div class="balance-card text-center">
+            <h4>// 錢包餘額</h4>
+            <h1 id="balanceDisplay">$100</h1>
+            <small class="terminal-prefix">初始餘額 $100 | 目標：限量黃金禮盒 ($100,000)</small>
+        </div>
+
+        <!-- 訊息提示 -->
+        <div id="messageArea"></div>
+
+        <!-- 商品列表 -->
+        <h3 class="section-title">商品列表</h3>
+        <div class="row g-4" id="productGrid"></div>
+
+        <!-- 購買紀錄 -->
+        <div id="purchaseHistory"></div>
+
+        <div style="height: 60px;"></div>
+    </div>
+
+    <!-- Flag 1 彈窗 -->
+    <div class="modal fade modal-flag" id="flag1Modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100">// FLAG 1 CAPTURED</h5>
+                </div>
+                <div class="modal-body py-4">
+                    <h1 class="display-3 mb-3">&#128681;</h1>
+                    <h3 style="color: var(--neon-magenta);">偵測到餘額異常！</h3>
+                    <p class="mt-3" style="font-size: 0.85rem;">
+                        你發現了數值驗證漏洞，<br>
+                        透過購買負數商品成功增加了餘額。
+                    </p>
+                    <div class="flag-value mt-3" onclick="copyFlag(this)" title="點擊複製" id="flag1Value"></div>
+                    <small style="color: rgba(192,192,192,0.4); font-size: 0.75rem;">點擊 Flag 可複製</small>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="submit_flag.html" class="btn btn-modal-close" style="border-color: rgba(255,0,255,0.4); color: var(--neon-magenta);">前往提交</a>
+                    <button type="button" class="btn btn-modal-close" data-bs-dismiss="modal">繼續挑戰</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flag 2 彈窗 -->
+    <div class="modal fade modal-flag" id="flag2Modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 179, 71, 0.1)) !important;">
+                    <h5 class="modal-title w-100" style="color: var(--neon-yellow) !important;">// FLAG 2 CAPTURED</h5>
+                </div>
+                <div class="modal-body py-4">
+                    <h1 class="display-1 mb-3">&#127881;</h1>
+                    <h3 style="color: var(--neon-yellow);">恭喜通關！</h3>
+                    <p class="mt-3" style="font-size: 0.85rem;">
+                        你利用了數值驗證漏洞，<br>
+                        透過購買負數商品增加餘額，成功買下了目標商品。
+                    </p>
+                    <div class="flag-value mt-3" onclick="copyFlag(this)" title="點擊複製" id="flag2Value"></div>
+                    <small style="color: rgba(192,192,192,0.4); font-size: 0.75rem;">點擊 Flag 可複製</small>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="submit_flag.html" class="btn btn-modal-close">前往提交</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

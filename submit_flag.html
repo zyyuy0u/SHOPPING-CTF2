@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag 提交 // 暗黑市場 CTF</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="navbar-brand">暗黑市場</a>
+            <span class="nav-label" style="color: var(--neon-magenta);">// FLAG SUBMISSION</span>
+            <a href="index.html" class="nav-back">[ 回商店 ]</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div id="messageArea"></div>
+
+        <!-- 計分板 -->
+        <div class="scoreboard text-center">
+            <h5>// 挑戰進度</h5>
+            <div class="score-value" id="scoreValue">0 / 2</div>
+            <div class="score-label">FLAGS CAPTURED</div>
+        </div>
+
+        <!-- Flag 1 -->
+        <div class="challenge-card" id="flag1Card">
+            <h4>FLAG 1 — 數值驗證漏洞</h4>
+            <p class="description">
+                這個商店的購物系統存在一個數值驗證漏洞。<br>
+                找到漏洞並利用它讓你的餘額增加，Flag 就會出現在結帳結果中。
+            </p>
+            <div class="points mb-3">100 PTS</div>
+            <div id="flag1Form">
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control" id="flag1Input" placeholder="FLAG{...}" autocomplete="off">
+                    <button class="btn-submit-flag" id="flag1Submit">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flag 2 -->
+        <div class="challenge-card" id="flag2Card">
+            <h4>FLAG 2 — 達成最終目標</h4>
+            <p class="description">
+                利用你發現的漏洞累積足夠的餘額，<br>
+                購買價值 $100,000 的「限量黃金禮盒」，Flag 就會出現。
+            </p>
+            <div class="points mb-3">200 PTS</div>
+            <div id="flag2Form">
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control" id="flag2Input" placeholder="FLAG{...}" autocomplete="off">
+                    <button class="btn-submit-flag" id="flag2Submit">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提交紀錄 -->
+        <div id="historySection"></div>
+
+        <div style="height: 60px;"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/submit_flag.js"></script>
+</body>
+</html>
