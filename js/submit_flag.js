@@ -1,31 +1,19 @@
 /**
- * Flag 提交頁面邏輯
+ * Flag 提交頁面邏輯（單一 Flag）
  */
 (function () {
     function updateUI() {
-        var f1 = Store.isFlagSolved(1);
-        var f2 = Store.isFlagSolved(2);
-        var solved = (f1 ? 1 : 0) + (f2 ? 1 : 0);
+        var solved = Store.isFlagSolved();
 
-        document.getElementById('scoreValue').textContent = solved + ' / 2';
+        document.getElementById('scoreValue').textContent = (solved ? 1 : 0) + ' / 1';
 
-        // Flag 1
-        var card1 = document.getElementById('flag1Card');
-        if (f1) {
-            card1.classList.add('solved');
-            document.getElementById('flag1Form').innerHTML =
+        var card = document.getElementById('flagCard');
+        if (solved) {
+            card.classList.add('solved');
+            document.getElementById('flagForm').innerHTML =
                 '<div style="color: var(--neon-green); font-size: 0.85rem;">&#10003; 已通過</div>';
         }
 
-        // Flag 2
-        var card2 = document.getElementById('flag2Card');
-        if (f2) {
-            card2.classList.add('solved');
-            document.getElementById('flag2Form').innerHTML =
-                '<div style="color: var(--neon-green); font-size: 0.85rem;">&#10003; 已通過</div>';
-        }
-
-        // 提交紀錄
         renderHistory();
     }
 
@@ -43,7 +31,6 @@
                 ? '<span class="badge-correct">CORRECT</span>'
                 : '<span class="badge-wrong">WRONG</span>';
             return '<tr>' +
-                '<td>Flag ' + s.flagNumber + '</td>' +
                 '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' +
                 escapeHtml(s.submittedFlag) + '</td>' +
                 '<td>' + badge + '</td>' +
@@ -55,48 +42,29 @@
             '<h3 class="section-title mt-5">提交紀錄</h3>' +
             '<div class="history-wrap mb-5">' +
             '<table class="table table-striped table-hover mb-0">' +
-            '<thead><tr><th>Flag</th><th>提交內容</th><th>結果</th><th>時間</th></tr></thead>' +
+            '<thead><tr><th>提交內容</th><th>結果</th><th>時間</th></tr></thead>' +
             '<tbody>' + rows + '</tbody></table></div>';
     }
 
-    // 提交 Flag 1
-    document.getElementById('flag1Submit').addEventListener('click', function () {
-        var input = document.getElementById('flag1Input');
+    // 提交 Flag
+    document.getElementById('flagSubmit').addEventListener('click', function () {
+        var input = document.getElementById('flagInput');
         var flag = input.value.trim();
         if (!flag) return;
 
-        var correct = Store.submitFlag(1, flag);
+        var correct = Store.submitFlag(flag);
         if (correct) {
-            showMessage('messageArea', 'Flag 1 正確！恭喜你！', 'success');
+            showMessage('messageArea', 'Flag 正確！恭喜通關！', 'success');
         } else {
-            showMessage('messageArea', 'Flag 1 錯誤，再試試看。', 'danger');
-        }
-        input.value = '';
-        updateUI();
-    });
-
-    // 提交 Flag 2
-    document.getElementById('flag2Submit').addEventListener('click', function () {
-        var input = document.getElementById('flag2Input');
-        var flag = input.value.trim();
-        if (!flag) return;
-
-        var correct = Store.submitFlag(2, flag);
-        if (correct) {
-            showMessage('messageArea', 'Flag 2 正確！恭喜你！', 'success');
-        } else {
-            showMessage('messageArea', 'Flag 2 錯誤，再試試看。', 'danger');
+            showMessage('messageArea', 'Flag 錯誤，再試試看。', 'danger');
         }
         input.value = '';
         updateUI();
     });
 
     // Enter 鍵提交
-    document.getElementById('flag1Input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') document.getElementById('flag1Submit').click();
-    });
-    document.getElementById('flag2Input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') document.getElementById('flag2Submit').click();
+    document.getElementById('flagInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') document.getElementById('flagSubmit').click();
     });
 
     // 初始化

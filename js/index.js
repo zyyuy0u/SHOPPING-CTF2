@@ -87,23 +87,12 @@
     }
 
     // 檢查是否有待顯示的 Flag（從 sessionStorage）
-    function checkPendingFlags() {
-        var f1 = sessionStorage.getItem('ctf_show_flag1');
-        var f2 = sessionStorage.getItem('ctf_show_flag2');
-
-        if (f1) {
-            document.getElementById('flag1Value').textContent = f1;
-            new bootstrap.Modal(document.getElementById('flag1Modal')).show();
-            sessionStorage.removeItem('ctf_show_flag1');
-        }
-
-        if (f2) {
-            document.getElementById('flag2Value').textContent = f2;
-            var delay = f1 ? 500 : 0;
-            setTimeout(function () {
-                new bootstrap.Modal(document.getElementById('flag2Modal')).show();
-            }, delay);
-            sessionStorage.removeItem('ctf_show_flag2');
+    function checkPendingFlag() {
+        var flag = sessionStorage.getItem('ctf_show_flag');
+        if (flag) {
+            document.getElementById('flagValue').textContent = flag;
+            new bootstrap.Modal(document.getElementById('flagModal')).show();
+            sessionStorage.removeItem('ctf_show_flag');
         }
     }
 
@@ -124,5 +113,5 @@
     renderProducts();
     renderPurchases();
     checkPendingMessage();
-    checkPendingFlags();
+    checkPendingFlag();
 })();

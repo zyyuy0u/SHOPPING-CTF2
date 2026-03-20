@@ -109,11 +109,8 @@
                 sessionStorage.setItem('ctf_message', result.message);
                 sessionStorage.setItem('ctf_message_type', result.messageType);
 
-                if (result.showFlag1) {
-                    sessionStorage.setItem('ctf_show_flag1', result.flag1);
-                }
-                if (result.showFlag2) {
-                    sessionStorage.setItem('ctf_show_flag2', result.flag2);
+                if (result.showFlag) {
+                    sessionStorage.setItem('ctf_show_flag', result.flag);
                 }
 
                 // 跳回首頁

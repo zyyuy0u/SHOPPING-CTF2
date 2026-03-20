@@ -9,8 +9,7 @@ var Store = (function () {
     // ---------------------------------------------------------------
     var _k = [0x53, 0x48, 0x4f, 0x50];  // 混淆金鑰
     // 編碼後的 Flag（不會以明文出現在原始碼中）
-    var _e1 = [0x15,0x04,0x0e,0x17,0x28,0x26,0x7c,0x37,0x67,0x3c,0x7e,0x26,0x60,0x17,0x21,0x25,0x3e,0x2a,0x7c,0x22,0x0c,0x3e,0x3a,0x61,0x3d,0x7b,0x3d,0x64,0x31,0x79,0x23,0x61,0x27,0x31,0x32];
-    var _e2 = [0x15,0x04,0x0e,0x17,0x28,0x2f,0x7f,0x3c,0x37,0x7b,0x21,0x0f,0x34,0x79,0x29,0x24,0x0c,0x2a,0x7f,0x28,0x0c,0x38,0x3a,0x22,0x30,0x20,0x7b,0x23,0x60,0x2c,0x32];
+    var _ef = [0x15,0x04,0x0e,0x17,0x28,0x2f,0x7f,0x3c,0x37,0x7b,0x21,0x0f,0x34,0x79,0x29,0x24,0x0c,0x2a,0x7f,0x28,0x0c,0x38,0x3a,0x22,0x30,0x20,0x7b,0x23,0x60,0x2c,0x32];
 
     function _d(enc) {
         var r = '';
@@ -52,10 +51,7 @@ var Store = (function () {
         _set('cart', {});
         _set('purchases', []);
         _set('flag_submissions', []);
-        _set('flag1_revealed', false);
-        _set('flag2_revealed', false);
-        _set('flag1_solved', false);
-        _set('flag2_solved', false);
+        _set('flag_solved', false);
         _set('initialized', true);
     }
 
@@ -103,7 +99,6 @@ var Store = (function () {
         var balance = getBalance();
         var boughtItems = [];
         var failedItems = [];
-        var balanceIncreased = false;
         var giftPurchased = false;
         var purchases = getPurchases();
 
@@ -117,7 +112,6 @@ var Store = (function () {
 
             // 計算總金額（漏洞：負數 quantity 導致負數 total）
             var total = product.price * quantity;
-            var oldBalance = balance;
 
             // 餘額檢查（漏洞：負數 total 使條件永遠成立）
             if (balance >= total) {
@@ -131,12 +125,7 @@ var Store = (function () {
                     createdAt: new Date().toLocaleString('zh-TW'),
                 });
 
-                // Flag 1 觸發：餘額增加
-                if (balance > oldBalance) {
-                    balanceIncreased = true;
-                }
-
-                // Flag 2 觸發：成功購買目標禮物
+                // Flag 觸發：成功購買目標禮物
                 if (product.isGift && quantity > 0) {
                     giftPurchased = true;
                 }
@@ -160,21 +149,13 @@ var Store = (function () {
             boughtItems: boughtItems,
             failedItems: failedItems,
             balance: balance,
-            showFlag1: false,
-            showFlag2: false,
-            flag1: null,
-            flag2: null,
+            showFlag: false,
+            flag: null,
         };
 
-        if (balanceIncreased) {
-            result.showFlag1 = true;
-            result.flag1 = _d(_e1);
-            _set('flag1_revealed', true);
-        }
         if (giftPurchased) {
-            result.showFlag2 = true;
-            result.flag2 = _d(_e2);
-            _set('flag2_revealed', true);
+            result.showFlag = true;
+            result.flag = _d(_ef);
         }
 
         // 建立訊息
@@ -193,19 +174,11 @@ var Store = (function () {
     }
 
     // Flag 提交驗證
-    function submitFlag(flagNumber, submittedFlag) {
-        var correct;
-        if (flagNumber === 1) {
-            correct = (submittedFlag === _d(_e1));
-        } else if (flagNumber === 2) {
-            correct = (submittedFlag === _d(_e2));
-        } else {
-            correct = false;
-        }
+    function submitFlag(submittedFlag) {
+        var correct = (submittedFlag === _d(_ef));
 
         var submissions = _get('flag_submissions', []);
         submissions.unshift({
-            flagNumber: flagNumber,
             submittedFlag: submittedFlag,
             isCorrect: correct,
             createdAt: new Date().toLocaleString('zh-TW'),
@@ -213,13 +186,13 @@ var Store = (function () {
         _set('flag_submissions', submissions);
 
         if (correct) {
-            _set('flag' + flagNumber + '_solved', true);
+            _set('flag_solved', true);
         }
 
         return correct;
     }
 
-    function isFlagSolved(n)    { return _get('flag' + n + '_solved', false); }
+    function isFlagSolved()     { return _get('flag_solved', false); }
     function getSubmissions()    { return _get('flag_submissions', []); }
 
     function getCartCount() {
@@ -231,8 +204,7 @@ var Store = (function () {
 
     // 重置所有資料
     function reset() {
-        var keys = ['balance','cart','purchases','flag_submissions',
-                    'flag1_revealed','flag2_revealed','flag1_solved','flag2_solved','initialized'];
+        var keys = ['balance','cart','purchases','flag_submissions','flag_solved','initialized'];
         keys.forEach(function(k) { localStorage.removeItem('ctf_' + k); });
         init();
     }
