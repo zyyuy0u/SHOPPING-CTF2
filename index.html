@@ -18,6 +18,7 @@
                     [ 購物車 ]
                     <span class="badge cart-badge" id="cartBadge" style="display:none;"></span>
                 </a>
+                <button onclick="if(confirm('確定要重置所有進度嗎？餘額、購物車、購買紀錄、Flag 提交紀錄都會被清除。')){Store.reset();location.reload();}" class="nav-flag-btn" style="border-color:rgba(255,50,50,0.4);color:#ff4444;cursor:pointer;background:none;">[ 重置 ]</button>
             </div>
         </div>
     </nav>
